@@ -1,0 +1,61 @@
+.counterWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: cornflowerblue;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: darkorchid;
+    width: 250px;
+    height: 200px;
+    border-radius: 10px;
+    margin: 30px;
+}
+
+
+
+.block {
+    width: 50px;
+    height: 30px;
+    background-color: white;
+    text-align: center;
+}
+
+.maximum {
+    background-color: gray;
+    color: white;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.number {
+    color: red;
+}
+
+.button {
+    margin: 20px;
+    border-radius: 10px;
+}
+
+
+
+.minimum {
+    background-color: darkgreen;
+    color: white;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
