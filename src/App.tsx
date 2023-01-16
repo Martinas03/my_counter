@@ -4,22 +4,23 @@ import {Counter} from "./Counter/Counter";
 
 function App() {
 
-  let [number, setNumber] = useState(0)
+  let [value, setValue] = useState(0)
 
   const inCreaseNumber = () => {
-      number++
-      setNumber(number)
+      value++
+      setValue(value)
   }
 
   const resetNumber = () => {
-      setNumber(0)
+      setValue(0)
   }
 
   return (
     <div className="App">
-      <Counter number={number}
+      <Counter number={value}
                inCreaseNumber={inCreaseNumber}
                resetNumber={resetNumber}
+               setValue={setValue}
       />
     </div>
   );
