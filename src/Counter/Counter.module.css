@@ -39,12 +39,12 @@
 }
 
 .number {
-    font-size: 50px;
+    font-size: 20px;
     color: red;
 }
 
 .currentNumber {
-    font-size: 50px;
+    font-size: 20px;
 }
 
 .button {
@@ -111,6 +111,14 @@
 .input {
     width: 50px;
     border-radius: 5px;
+}
+
+
+.errorInput {
+    width: 50px;
+    border-radius: 5px;
+    background-color: plum;
+    border: 2px red solid;
 }
 
 .inputbox {

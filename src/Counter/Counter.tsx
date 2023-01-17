@@ -10,15 +10,19 @@ type PropsType = {
 }
 
 export const Counter = (props: PropsType) => {
-    let [inputNumber, setInputNumber] = useState('')
-    useEffect(() => {
-            let string = localStorage.getItem('CounterValue')
-            if (string) {
-                let newValue = JSON.parse(string)
-                props.setValue(newValue)
-            }
-        }, []
-    )
+    let [inputMaxValue, setInputMaxValue] = useState('0')
+    let [inputMinValue, setInputMinValue] = useState('0')
+    let [error, setError] = useState('')
+    let [clickSet, setClickSet] = useState('')
+
+    // useEffect(() => {
+    //         let string = localStorage.getItem('CounterValue')
+    //         if (string) {
+    //             let newValue = JSON.parse(string)
+    //             props.setValue(newValue)
+    //         }
+    //     }, []
+    // )
     // useEffect(() => {
     //         setHandler()
     //     }, [props.number]
@@ -42,15 +46,30 @@ export const Counter = (props: PropsType) => {
     //     }
     // }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputNumber(e.currentTarget.value)
+    const onChangeMaxHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        // if(Number(e.currentTarget.value) >= 0){
+        setInputMaxValue(e.currentTarget.value)
+        // }
+        setError('Incorrect value')
+        setClickSet('press set')
     }
+    const onChangeMinHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        // if(Number(e.currentTarget.value) >= 0){
+        setInputMinValue(e.currentTarget.value)
+        // }
+        setError('Incorrect value')
+        setClickSet('press set')
+    }
+
 
     let onSetHandler = () => {
 
     }
-    let isCounterMax = props.number === 10
-    let isCounterMin = props.number === 0
+    let isCounterMax = props.number === Number(inputMaxValue)
+    let isCounterMin = props.number === Number(inputMinValue)
+
+    let incorrectValue = inputMaxValue <= inputMinValue
+    let incorrecNegativeValue = ((Number(inputMaxValue) || Number(inputMinValue)) < 0) || ((Number(inputMaxValue) && Number(inputMinValue)) < 0)
 
     return (
         <div className={s.body}>
@@ -63,8 +82,8 @@ export const Counter = (props: PropsType) => {
                                     max value
                                 </div>
                                 <div>
-                                    <input value={inputNumber} onChange={onChangeHandler} type="number"
-                                           className={s.input}/>
+                                    <input value={inputMaxValue} onChange={onChangeMaxHandler} type="number"
+                                           className={incorrectValue || incorrecNegativeValue ? s.errorInput : s.input}/>
                                 </div>
                             </div>
 
@@ -73,15 +92,20 @@ export const Counter = (props: PropsType) => {
                                     min value
                                 </div>
                                 <div>
-                                    <input type="number" className={s.input}/>
+                                    <input value={inputMinValue} type="number"
+                                           onChange={onChangeMinHandler}
+                                           className={incorrectValue || incorrecNegativeValue ? s.errorInput : s.input}/>
                                 </div>
                             </div>
 
                         </div>
                         <div className={s.item2}>
-                            <button onClick={onSetHandler} className={s.setButton}>
-                                set
-                            </button>
+                            <Button title={'set'} callBack={onSetHandler}
+                                    disabled={incorrectValue || incorrecNegativeValue}
+                                    className={s.setButton}/>
+                            {/*<button onClick={onSetHandler} className={s.setButton}>*/}
+                            {/*    set*/}
+                            {/*</button>*/}
                         </div>
                     </div>
                 </div>
@@ -92,8 +116,9 @@ export const Counter = (props: PropsType) => {
                     <div className={s.wrapper}>
                         <div className={s.block1}>
                             <div className={s.item1_2}>
-                                <div className={isCounterMax ? s.number : s.currentNumber}>
-                                    {props.number}
+                                <div
+                                    className={isCounterMax || incorrectValue || incorrecNegativeValue ? s.number : s.currentNumber}>
+                                    {incorrectValue || incorrecNegativeValue ? error : props.number}
                                 </div>
                             </div>
                         </div>
@@ -102,52 +127,17 @@ export const Counter = (props: PropsType) => {
                             <div className={s.buttons}>
                                 <Button title={'reset'}
                                         callBack={onClickResetHandler}
-                                        disabled={isCounterMin}
+                                        disabled={isCounterMin || incorrectValue || incorrecNegativeValue}
                                         className={isCounterMin ? s.minimum : s.button}/>
-                                {/*<button*/}
-                                {/*    className={isCounterMin ? s.minimum : ''}*/}
-                                {/*    disabled={isCounterMin}*/}
-                                {/*    onClick={onClickResetHandler}>*/}
-                                {/*    reset*/}
-                                {/*</button>*/}
                             </div>
 
                             <div className={s.buttons}>
                                 <Button title={'inc'}
                                         callBack={onClickIncreaseHandler}
-                                        disabled={isCounterMax}
+                                        disabled={isCounterMax || incorrectValue || incorrecNegativeValue}
                                         className={isCounterMax ? s.maximum : s.button}/>
 
-                                {/*<button className={isCounterMax ? s.maximum : ''}*/}
-                                {/*        disabled={isCounterMax}*/}
-                                {/*        onClick={onClickIncreaseHandler}>*/}
-                                {/*    inc*/}
-                                {/*</button>*/}
                             </div>
-                            {/*<div>*/}
-                            {/*    <Button title={'SetToLocalStorage'}*/}
-                            {/*            callBack={setHandler}*/}
-                            {/*            disabled={false}*/}
-                            {/*            className={s.button}/>*/}
-
-                            {/*    /!*<button className={isCounterMax ? s.maximum : ''}*!/*/}
-                            {/*    /!*        disabled={isCounterMax}*!/*/}
-                            {/*    /!*        onClick={onClickIncreaseHandler}>*!/*/}
-                            {/*    /!*    inc*!/*/}
-                            {/*    /!*</button>*!/*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <Button title={'GetToLocalStorage'}*/}
-                            {/*            callBack={getHandler}*/}
-                            {/*            disabled={false}*/}
-                            {/*            className={s.button}/>*/}
-
-                            {/*    /!*<button className={isCounterMax ? s.maximum : ''}*!/*/}
-                            {/*    /!*        disabled={isCounterMax}*!/*/}
-                            {/*    /!*        onClick={onClickIncreaseHandler}>*!/*/}
-                            {/*    /!*    inc*!/*/}
-                            {/*    /!*</button>*!/*/}
-                            {/*</div>*/}
                         </div>
                     </div>
                 </div>
