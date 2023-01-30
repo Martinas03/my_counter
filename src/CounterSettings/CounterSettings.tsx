@@ -1,29 +1,22 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import s from './Counter.module.css'
 import {Button} from "../Button/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {resetCounterAC, setCounterAC} from "../state/counterReducer";
-import {AppRootStateType} from "../state/store";
-import {setInputMaxAC} from "../state/inputMaxReducer";
-import {setInputMinAC} from "../state/inputMinReducer";
 
 type PropsType = {
-    number: number
-    inCreaseNumber: () => void
-    resetNumber: () => void
+    // number: number
+    // inCreaseNumber: () => void
+    // resetNumber: () => void
+    setValue: (value: number) => void
 }
 
-export const Counter = (props: PropsType) => {
+export const CounterSettings = (props: PropsType) => {
+    let [inputMaxValue, setInputMaxValue] = useState<number>(0)
+    let [inputMinValue, setInputMinValue] = useState<number>(0)
     let [error, setError] = useState('')
     let [pressSet, setPressSet] = useState('')
     let [disableSetButton, setDisableSetButton] = useState(true)
     let [disableResetAndIncButtons, setDisableResetAndIncButtons] = useState(true)
     const [pageLoaded, setPageLoaded] = useState(false);
-
-    const inputMaxValue = useSelector<AppRootStateType, number>(state => state.inputMaxValue)
-    const inputMinValue = useSelector<AppRootStateType, number>(state => state.inputMinValue)
-    const dispatch = useDispatch()
-
 
     useEffect(() => {
         setPageLoaded(true);
@@ -32,15 +25,24 @@ export const Counter = (props: PropsType) => {
 
         if (valueAsString) {
             let newValue = JSON.parse(valueAsString)
-            dispatch(setInputMaxAC(newValue))
+            setInputMaxValue(newValue)
         }
         if (valueAsStrin2g) {
             let newValue = JSON.parse(valueAsStrin2g)
-            dispatch(setInputMinAC(newValue))
+            setInputMinValue(newValue)
 
         }
     }, [])
 
+    //
+    // useEffect(() => {
+    //     let valueAsString =  localStorage.getItem('counterValue')
+    //     if(valueAsString){
+    //         let newValue = JSON.parse(valueAsString)
+    //         setInputMinValue(newValue)
+    //     }
+    // }, [])
+    //
     useEffect(() => {
         console.log('setMaxValue')
         if(pageLoaded) {
@@ -56,40 +58,41 @@ export const Counter = (props: PropsType) => {
     }, [inputMinValue])
 
 
-    const onClickIncreaseHandler = () => {
-        props.inCreaseNumber()
-        setDisableSetButton(false)
-    }
-
-    const onClickResetHandler = () => {
-        dispatch(setCounterAC(inputMinValue))
-        setDisableSetButton(false)
-    }
+    // const onClickIncreaseHandler = () => {
+    //     props.inCreaseNumber()
+    //     setDisableSetButton(false)
+    // }
+    //
+    // const onClickResetHandler = () => {
+    //     props.setValue(inputMinValue)
+    //     setDisableSetButton(false)
+    // }
 
     const onChangeMaxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setInputMaxAC(+e.currentTarget.value))
+        setInputMaxValue(+e.currentTarget.value)
         setError('Incorrect value')
         setPressSet(`press "set"`)
         setDisableSetButton(true)
         setDisableResetAndIncButtons(false)
     }
     const onChangeMinHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setInputMinAC(+e.currentTarget.value))
+        setInputMinValue(+e.currentTarget.value)
         setError('Incorrect value')
         setPressSet(`press "set"`)
         setDisableSetButton(true)
         setDisableResetAndIncButtons(false)
     }
 
+
     let onSetHandler = () => {
-        dispatch(setCounterAC(inputMinValue))
+        props.setValue(inputMinValue)
         setDisableSetButton(false)
         setDisableResetAndIncButtons(true)
     }
 
 
-    let isCounterMax = props.number === inputMaxValue
-    let isCounterMin = props.number === inputMinValue
+    // let isCounterMax = props.number === inputMaxValue
+    // let isCounterMin = props.number === inputMinValue
 
     let incorrectValue = inputMaxValue <= inputMinValue
 
@@ -135,36 +138,38 @@ export const Counter = (props: PropsType) => {
 
 
 
-                <div className={s.counterWrapper}>
+                {/*<div className={s.counterWrapper}>*/}
 
-                    <div className={s.wrapper}>
+                {/*    <div className={s.wrapper}>*/}
 
-                        <div className={s.block1}>
-                            <div className={s.item1_2}>
-                                <div
-                                    className={isCounterMax || incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue ? s.number : s.currentNumber}>
-                                    {incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue ? error : !disableResetAndIncButtons ? pressSet : props.number}
-                                </div>
-                            </div>
-                        </div>
+                {/*        <div className={s.block1}>*/}
+                {/*            <div className={s.item1_2}>*/}
+                {/*                <div*/}
+                {/*                    className={isCounterMax || incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue ? s.number : s.currentNumber}>*/}
+                {/*                    {incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue ? error : !disableResetAndIncButtons ? pressSet : props.number}*/}
+                {/*                </div>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
 
-                        <div className={s.item2}>
-                            <div className={s.buttons}>
-                                <Button title={'reset'}
-                                        callBack={onClickResetHandler}
-                                        disabled={disableResetAndIncButtons ? isCounterMin || incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue : !disableResetAndIncButtons}
-                                        className={isCounterMin ? s.minimum : s.button}/>
-                            </div>
+                {/*        <div className={s.item2}>*/}
+                {/*            <div className={s.buttons}>*/}
+                {/*                <Button title={'reset'}*/}
+                {/*                        callBack={onClickResetHandler}*/}
+                {/*                        disabled={disableResetAndIncButtons ? isCounterMin || incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue : !disableResetAndIncButtons}*/}
+                {/*                        className={isCounterMin ? s.minimum : s.button}/>*/}
+                {/*            </div>*/}
 
-                            <div className={s.buttons}>
-                                <Button title={'inc'}
-                                        callBack={onClickIncreaseHandler}
-                                        disabled={disableResetAndIncButtons ? isCounterMax || incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue : !disableResetAndIncButtons}
-                                        className={isCounterMax ? s.maximum : s.button}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {/*            <div className={s.buttons}>*/}
+                {/*                <Button title={'inc'}*/}
+                {/*                        callBack={onClickIncreaseHandler}*/}
+                {/*                        disabled={disableResetAndIncButtons ? isCounterMax || incorrectValue || incorrectNegativeMinValue || incorrectNegativeMaxValue : !disableResetAndIncButtons}*/}
+                {/*                        className={isCounterMax ? s.maximum : s.button}/>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+
+
             </div>
         </div>);
 
