@@ -99,7 +99,6 @@ export const Counter = (props: PropsType) => {
     return (
         <div className={s.body}>
             <div className={s.counterWrapper}>
-
                 <div className={s.wrapper}>
                     <div className={s.block1}>
                         <div className={s.item1}>

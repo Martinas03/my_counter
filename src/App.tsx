@@ -42,6 +42,7 @@ function App() {
 
     return (
         <div className="App">
+
             <Counter number={counter}
                      inCreaseNumber={inCreaseNumber}
                      resetNumber={resetNumber}
